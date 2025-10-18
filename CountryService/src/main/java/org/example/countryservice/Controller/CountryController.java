@@ -24,6 +24,7 @@ public class CountryController {
     @Autowired
     CountryService countryservice;
 
+    // Entrypoint to get    All Countries   
     @GetMapping("/getcountries")
     public ResponseEntity <List <Country>> getCountries() {
         try {
