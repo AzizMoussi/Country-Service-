@@ -15,7 +15,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'git@github.com:AzizMoussi:/Country-Service-'
+                git branch: 'main', url: 'git@github.com:AzizMoussi/Country-Service-'
             }
         }
 
