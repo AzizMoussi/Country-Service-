@@ -41,7 +41,8 @@ pipeline {
             steps {
                 script {
                     def warFile = "target/${env.JOB_NAME}.war"
-                    sh "cp target/*.war ${TOMCAT_HOME}/webapps/"
+                    sh 'cp target/*.war "/mnt/c/Program Files/Apache Software Foundation/Tomcat 9.0/webapps/"'
+
                 }
             }
         }
