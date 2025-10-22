@@ -31,7 +31,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                WithSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'sonarQubePWD') {
+                withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'sonarQubePWD') {
                     sh """
                         mvn clean verify sonar:sonar \
                             -Dsonar.projectKey=country-servicee \
