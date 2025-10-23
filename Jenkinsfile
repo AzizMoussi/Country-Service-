@@ -30,6 +30,12 @@ pipeline {
                 }
             }
         }
+        stage('Check WAR') {
+            steps {
+                sh 'ls -l target/'
+            }
+        }
+
 
         stage('SonarQube Analysis') {
             steps {
