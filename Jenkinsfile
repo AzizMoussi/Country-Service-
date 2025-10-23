@@ -60,7 +60,7 @@ pipeline {
                             -DartifactId=country-service \
                             -Dversion=1.0.0 \
                             -Dpackaging=war \
-                            -Dfile=target/*.war \
+                            -Dfile=target/FirstStep-1.0-SNAPSHOT.war \
                             -DrepositoryId=nexus \
                             -Durl=${NEXUS_REPO_URL} \
                             -Dusername=$NEXUS_USER \
@@ -69,6 +69,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Deploy to Tomcat') {
             steps {
