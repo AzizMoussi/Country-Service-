@@ -50,6 +50,27 @@ pipeline {
                 }
             }
         }
+        stage('Debug Info') {
+            steps {
+                echo "=== Workspace Files ==="
+                sh 'ls -alh'
+
+                echo "=== Target Folder ==="
+                sh 'ls -alh target/'
+
+                echo "=== Java Version ==="
+                sh 'java -version'
+
+                echo "=== Maven Version ==="
+                sh 'mvn -version'
+
+                echo "=== Environment Variables (masked sensitive ones) ==="
+                sh 'echo JOB_NAME=$JOB_NAME'
+                sh 'echo TOMCAT_HOME=$TOMCAT_HOME'
+                sh 'echo NEXUS_REPO_URL=$NEXUS_REPO_URL'
+            }
+        }
+
 
         stage('Upload Artifact to Nexus') {
             steps {
