@@ -51,24 +51,21 @@ pipeline {
             }
         }
 
-        stage('Upload Artifact to Nexus') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                    sh '''
-                        mvn deploy:deploy-file \
-                            -DgroupId=com.aziz.country \
-                            -DartifactId=country-service \
-                            -Dversion=1.0.0 \
-                            -Dpackaging=war \
-                            -Dfile=target/FirstStep-1.0-SNAPSHOT.war \
-                            -DrepositoryId=nexus \
-                            -Durl=http://localhost:8081/repository/mavenreleases/ \
-                            -Dusername=admin \
-                            -Dpassword=aziz06
-                    '''
-                }
-            }
-        }
+withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+    sh '''
+        mvn deploy:deploy-file \
+            -DgroupId=com.aziz.country \
+            -DartifactId=country-service \
+            -Dversion=1.0.0 \
+            -Dpackaging=war \
+            -Dfile=target/FirstStep-1.0-SNAPSHOT.war \
+            -DrepositoryId=nexus \
+            -Durl=http://localhost:8081/repository/mavenreleases/ \
+            -Dusername=$NEXUS_USER \
+            -Dpassword=$NEXUS_PASS
+    '''
+}
+
 
 
 
