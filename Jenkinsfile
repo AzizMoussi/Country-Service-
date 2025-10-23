@@ -8,6 +8,8 @@ pipeline {
 
     environment {
         TOMCAT_HOME = "/mnt/c/Program Files/Apache Software Foundation/Tomcat 9.0"
+        NEXUS_REPO_URL = "http://localhost:8081/repository/mavenreleases/"
+        NEXUS_CREDENTIALS = "nexusCreds"
     }
 
     stages {
@@ -18,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Compile, Test, Package') {
+        stage('Build and Test') {
             steps {
                 sh 'mvn clean install'
             }
@@ -43,5 +45,32 @@ pipeline {
             }
         }
 
+        stage('Upload Artifact to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${NEXUS_CREDENTIALS}", usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    sh """
+                        mvn deploy:deploy-file \
+                            -DgroupId=com.aziz.country \
+                            -DartifactId=country-service \
+                            -Dversion=1.0.0 \
+                            -Dpackaging=war \
+                            -Dfile=target/*.war \
+                            -DrepositoryId=nexus \
+                            -Durl=${NEXUS_REPO_URL} \
+                            -Dusername=$NEXUS_USER \
+                            -Dpassword=$NEXUS_PASS
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def warFile = "target/${env.JOB_NAME}.war"
+                    sh 'cp target/*.war "/mnt/c/Program Files/Apache Software Foundation/Tomcat 9.0/webapps/"'
+                }
+            }
+        }
     }
 }
