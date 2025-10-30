@@ -30,22 +30,21 @@ pipeline {
                 }
             }
         }
-
-        stage('Build Dockerfile'){
-            steps{
-                sh 'docker build -t mycountryservice:$BUILD_NUMBER '
+        stage('Build Dockerfile') {
+            steps {
+                sh 'docker build -t mycountryservice:$BUILD_NUMBER .'
                 withCredentials([string(credentialsId: 'dockerhub-paswd', variable: 'dockerhub-pwd')]) {
                     sh 'docker login -u azizmoussi -p $dockerhub-pwd'
                 }
-                sh ' docker tag mycountryservice:$BUIL_NUMBER azizmoussi/mycountryservice:$BUILD_NUMBER'
+                sh 'docker tag mycountryservice:$BUILD_NUMBER azizmoussi/mycountryservice:$BUILD_NUMBER'
                 sh 'docker push azizmoussi/mycountryservice:$BUILD_NUMBER'
             }
-
         }
-        stage('Deploy microservice'){
-            steps{
+
+        stage('Deploy microservice') {
+            steps {
                 sh 'docker rm -f $(docker ps -aq)'
-                sh ' docker run -d -p 8082:8082 --name  mycountryservice:$BUILD_NUMBER'
+                sh 'docker run -d -p 8082:8082 --name mycountryservice azizmoussi/mycountryservice:$BUILD_NUMBER'
             }
         }
 
