@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh 'docker build -t mycountryservice:$BUILD_NUMBER .'
                 withCredentials([string(credentialsId: 'dockerhub-paswd', variable: 'dockerhub-pwd')]) {
-                    sh 'docker login -u azizmoussi -p $dockerhub-pwd'
+                    sh 'docker login -u azizmoussi -p ${dockerhub-pwd}'
                 }
                 sh 'docker tag mycountryservice:$BUILD_NUMBER azizmoussi/mycountryservice:$BUILD_NUMBER'
                 sh 'docker push azizmoussi/mycountryservice:$BUILD_NUMBER'
