@@ -33,8 +33,8 @@ pipeline {
         stage('Build Dockerfile') {
             steps {
                 sh 'docker build -t mycountryservice:$BUILD_NUMBER .'
-                withCredentials([string(credentialsId: 'dockerhub-paswd', variable: 'dockerhub-pwd')]) {
-                    sh 'docker login -u azizmoussi -p ${dockerhub-pwd}'
+                withCredentials([string(credentialsId: 'dockerhub-paswd', variable: 'dockerhub_pwd')]) {
+                    sh 'echo $dockerhub_pwd | docker login -u azizmoussi --password-stdin'
                 }
                 sh 'docker tag mycountryservice:$BUILD_NUMBER azizmoussi/mycountryservice:$BUILD_NUMBER'
                 sh 'docker push azizmoussi/mycountryservice:$BUILD_NUMBER'
